@@ -1,0 +1,38 @@
+//// The drawing Path types produced by the evaluator and rendered by the
+//// animator.
+////
+//// The canvas maps a 1000-wide box centred on the origin onto its full size, and
+//// x, y, and thickness are all in those units.
+
+/// A point in world coordinates.
+pub type Point {
+  Point(x: Float, y: Float)
+}
+
+/// A color, with each channel from 0 to 255.
+pub type Color {
+  Color(r: Int, g: Int, b: Int)
+}
+
+pub type Shape {
+  Line(start: Point, end: Point)
+  // A straight line in a chosen color.
+  ColorLine(start: Point, end: Point, color: Color)
+  // Part of a circle, drawn from angle `from` toward angle `to` (degrees).
+  Arc(center: Point, radius: Float, from: Float, to: Float, color: Color)
+  // A cubic Bezier curve.
+  Curve(
+    start: Point,
+    control1: Point,
+    control2: Point,
+    end: Point,
+    color: Color,
+  )
+}
+
+pub type Path {
+  // start and end are the times (in tenths of a second) between which the path is
+  // drawn: the reveal runs linearly from nothing at start to the complete shape at
+  // end. A path with end <= start appears complete the moment it starts.
+  Path(shape: Shape, start: Float, end: Float, thickness: Float)
+}

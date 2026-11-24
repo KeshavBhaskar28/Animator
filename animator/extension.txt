@@ -1,0 +1,23 @@
+Extension: Color Turtle Kaleidoscope
+
+My extension combines three things: a color system with curved shapes, turtle graphics, and symmetry transforms. Together they make it easy to write short programs that produce colorful, intricate animated patterns such as mandalas, flowers, and spirals.
+
+1. Colors and curved shapes.
+A new record Rgb(r, g, b) describes a color, with each channel from 0 to 255. The built-in hsl(hue, saturation, lightness) also produces an Rgb, with hue in degrees (0-359) and saturation and lightness as percentages (0-100), which makes rainbow effects simple. Three new shapes accept a color:
+  - ColorLine(start, end, color): a straight line in a chosen color.
+  - Arc(center, radius, from, to, color): part of a circle, from angle `from` to angle `to` in degrees. It is drawn in from the first angle toward the second.
+  - Curve(start, control1, control2, end, color): a smooth cubic Bezier curve.
+Plain Line shapes keep the app's automatic palette, so all existing programs look the same as before. Because the language only has integers, sin(degrees, scale) and cos(degrees, scale) return the rounded value of scale times the sine or cosine.
+
+2. Turtle graphics.
+Instead of computing coordinates, a program can steer a "turtle" that draws as it moves. turtle(x, y, heading) creates a turtle. forward(t, distance), turn(t, degrees), pen_up(t), pen_down(t), pen_color(t, color), pen_width(t, width), speed(t, units_per_tenth_second), and circle(t, radius, degrees) each return an updated turtle, and turtle_paths(t) returns the List(Path) it has drawn. Each move is timed to start when the previous one ends and takes time proportional to its length, so the animation shows the turtle drawing in order. Headings are in degrees with 0 pointing right; because screen y points down, positive turns (and positive circle angles) go clockwise and negative ones go counterclockwise. Moving with the pen up takes no time. A turtle tracks its position with sub-unit precision internally, so long sequences of turns do not drift.
+While the animation plays, a small cartoon turtle (patterned shell, head, tail, and paddling legs) walks at the tip of every line, arc, or curve that is still being drawn, facing the direction it is drawing, so it looks like the turtles are drawing the picture. Its legs move with the animation clock, so they freeze when the animation is paused, and each turtle disappears when its path is finished. This works for every drawing, not only ones made with the turtle built-ins.
+
+3. Coloring and symmetry transforms on any list of paths.
+  - gradient(paths, from_color, to_color) recolors the paths so the colors blend smoothly from the first path to the last.
+  - rainbow(paths) gives the paths hues that cycle through the full spectrum.
+  - rotate(paths, degrees) rotates every path around the origin.
+  - kaleidoscope(paths, n) makes n copies rotated evenly around the origin, so they all draw at the same time like a kaleidoscope.
+  - mirror(paths) adds a left-right reflection of the paths.
+
+Three new example programs, "mandala" (turtle petals + kaleidoscope + rainbow), "color_spiral" (a turtle changing pen color along growing arcs), and "fountain" (mirrored Bezier curves with a gradient), show these features in use, and the shape slider can control values such as the number of kaleidoscope copies.
